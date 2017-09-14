@@ -2,8 +2,11 @@
  *  AirNow Virtual Sensor
  *
  *  Author: jschlackman (james@schlackman.org)
- *
+ *  Version: 1.0
  *  Date: 2017-09-14
+ *
+ *  Latest version & ReadMe: https://github.com/jschlackman/AirNow
+ *
  */
 metadata {
 	definition (name: "AirNow Virtual Sensor", namespace: "jschlackman", author: "james@schlackman.org") {
