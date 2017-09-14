@@ -36,7 +36,7 @@ A SmartThings virtual device type handler (DTH) for retrieving air quality data 
 
 Once setup is complete, you can view basic air quality data via the SmartThings mobile app by checking the device under **My Home** > **Things**. The Things list will show a 'combined AQI' value, which is generally the higher of the Ozone or PM2.5 observations. The device detail view will show a breakdown of the different observations, as well as the location from which air quality observations are being recorded.
 
-The device handler will refresh data once an hour by default, but it does so via a somewhat unsupported method (SmartThings does not provide a supported method for devices to auto-refresh themselves). If you need data more frequently, or it is not updating at all for you, use a device polling SmartApp such as [Pollster](https://github.com/statusbits/smartthings/blob/master/Pollster.md).
+The device handler will refresh data once an hour by default, but it does so via a somewhat unsupported method (SmartThings does not provide a supported method for devices to auto-refresh themselves). If you need data more frequently, or it is not updating at all for you, use a device polling SmartApp such as [Pollster](https://github.com/statusbits/smartthings/blob/master/Pollster.md). The device will attempt to pull new data every time it is polled.
 
 Almost all the data available from the AirNow API is also accessible to SmartApps via device attributes. These can be used as inputs for other automations that support reading from devices using the generic **capability.sensor**, such as custom rules created in [WebCoRE](https://community.smartthings.com/t/faq-what-is-webcore-and-what-was-core/59981).
 
