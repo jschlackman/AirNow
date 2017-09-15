@@ -44,11 +44,11 @@ metadata {
 			state "default", label:'${currentValue}', icon: "st.Outdoor.outdoor25", // Defaults to tree icon from ST Outdoor category
                 backgroundColors:[
                     [value: 25, color: "#44b621"],
-                    [value: 75, color: "#f1d801"],
-                    [value: 125, color: "#d04e00"],
-                    [value: 175, color: "#bc2323"],
-                    [value: 250, color: "#693591"],
-                    [value: 400, color: "#7e0023"],
+                    [value: 60, color: "#f1d801"],
+                    [value: 110, color: "#d04e00"],
+                    [value: 165, color: "#bc2323"],
+                    [value: 220, color: "#693591"],
+                    [value: 320, color: "#7e0023"],
                 ]
         	}
 
@@ -62,11 +62,11 @@ metadata {
 			state "default", label:'${currentValue}',
                 backgroundColors:[
                     [value: 25, color: "#44b621"],
-                    [value: 75, color: "#f1d801"],
-                    [value: 125, color: "#d04e00"],
-                    [value: 175, color: "#bc2323"],
-                    [value: 250, color: "#693591"],
-                    [value: 400, color: "#7e0023"],
+                    [value: 60, color: "#f1d801"],
+                    [value: 110, color: "#d04e00"],
+                    [value: 165, color: "#bc2323"],
+                    [value: 220, color: "#693591"],
+                    [value: 320, color: "#7e0023"],
                 ]
 		}
 
@@ -80,11 +80,11 @@ metadata {
 			state "default", label:'${currentValue}',
                 backgroundColors:[
                     [value: 25, color: "#44b621"],
-                    [value: 75, color: "#f1d801"],
-                    [value: 125, color: "#d04e00"],
-                    [value: 175, color: "#bc2323"],
-                    [value: 250, color: "#693591"],
-                    [value: 400, color: "#7e0023"],
+                    [value: 60, color: "#f1d801"],
+                    [value: 110, color: "#d04e00"],
+                    [value: 165, color: "#bc2323"],
+                    [value: 220, color: "#693591"],
+                    [value: 320, color: "#7e0023"],
                 ]
 		}
 
