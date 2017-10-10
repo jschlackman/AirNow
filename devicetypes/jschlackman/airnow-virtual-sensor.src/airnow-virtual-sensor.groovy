@@ -163,40 +163,52 @@ def poll() {
 				// Parse the observation data array
 				resp.data.each {observation ->
 					
-                    if (observation.ParameterName == "O3") {
-                    	send(name: "O3", value: observation.AQI)
-                    	send(name: "O3Category", value: observation.Category.Number)
-                    	send(name: "O3CategoryName", value: observation.Category.Name)
-                    }
-					else if (observation.ParameterName == "PM2.5") {
-                    	send(name: "Pm25", value: observation.AQI)
-                    	send(name: "Pm25Category", value: observation.Category.Number)
-                    	send(name: "Pm25CategoryName", value: observation.Category.Name)
-					}	
-					
-                    // Check if the observation currently being parsed has the highest AQI and should therefore be the combined AQI
-                    if ((observation.AQI > newCombined) || (observation.Category.Number > newCombinedCategory)) {
-                    	newCombined = observation.AQI
-                        newCombinedCategory = observation.Category.Number
-                        newCombinedCategoryName = observation.Category.Name
-                    }
+                    // Only parse this data if the AQI figure is in a sensible range (accounts for ocassional API bugs)
+                    if ((observation.AQI >= 0) && (observation.AQI <= 2000)) {
                     
+                        if (observation.ParameterName == "O3") {
+                            send(name: "O3", value: observation.AQI)
+                            send(name: "O3Category", value: observation.Category.Number)
+                            send(name: "O3CategoryName", value: observation.Category.Name)
+                        }
+                        else if (observation.ParameterName == "PM2.5") {
+                            send(name: "Pm25", value: observation.AQI)
+                            send(name: "Pm25Category", value: observation.Category.Number)
+                            send(name: "Pm25CategoryName", value: observation.Category.Name)
+                        }	
+
+                        // Check if the observation currently being parsed has the highest AQI and should therefore be the combined AQI
+                        if ((observation.AQI > newCombined) || (observation.Category.Number > newCombinedCategory)) {
+                            newCombined = observation.AQI
+                            newCombinedCategory = observation.Category.Number
+                            newCombinedCategoryName = observation.Category.Name
+                        }
+					} else {
+                    	log.error("AirNow returned an AQI of ${observation.AQI} for ${observation.ParameterName}. Ignoring as this is probably invalid.")
+                    }
 				}
 				
-				// Send the combined AQI
-                send(name: "combined", value: newCombined)
-                send(name: "combinedCategory", value: newCombinedCategory)
-                send(name: "combinedCategoryName", value: newCombinedCategoryName)
+                // If we got valid data for at least one observation, send the combined AQI and reporting data
+                if (newCombined > -1) {
+                
+                    // Send the combined AQI
+                    send(name: "combined", value: newCombined)
+                    send(name: "combinedCategory", value: newCombinedCategory)
+                    send(name: "combinedCategoryName", value: newCombinedCategoryName)
 
-				// Send the first reporting area (it will be the same for both observations)
-				send(name: "reportingLocation", value: "${resp.data[0].ReportingArea} ${resp.data[0].StateCode}")
-				send(name: "latitude", value: resp.data[0].Latitude)
-				send(name: "longitude", value: resp.data[0].Longitude)
-				send(name: "dateObserved", value: resp.data[0].DateObserved)
-				send(name: "hourObserved", value: resp.data[0].HourObserved)
+                    // Send the first reporting area (it will be the same for both observations)
+                    send(name: "reportingLocation", value: "${resp.data[0].ReportingArea} ${resp.data[0].StateCode}")
+                    send(name: "latitude", value: resp.data[0].Latitude)
+                    send(name: "longitude", value: resp.data[0].Longitude)
+                    send(name: "dateObserved", value: resp.data[0].DateObserved)
+                    send(name: "hourObserved", value: resp.data[0].HourObserved)
+
+					log.debug("Sucessfully retrieved air quality data from AirNow.")
+				} else {
+					log.debug("Failed to retrieve valid air quality data from AirNow.")
+                }
 			}
 
-			log.debug("Sucessfully retrieved air quality data from AirNow.")
 
 		}
 		catch (SocketTimeoutException e) {
