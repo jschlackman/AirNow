@@ -2,6 +2,14 @@
 
 A SmartThings virtual device type handler (DTH) for retrieving air quality data from the U.S. EPA [AirNow API](https://docs.airnowapi.org/).
 
+## Data Limitations
+
+Data returned is subject to the [limitations of the AirNow API](https://docs.airnowapi.org/faq#reportingAreaForecasts). In addition, this virtual device will only return air quality index (AQI) values below 2000. The AirNow API sometimes reports completely erroneous and very high values, so anything above 2000 will be ignored. Here's why the cut-off is at that level:
+
+The [EPA's AQI categories](https://airnow.gov/index.cfm?action=aqi_brochure.index) work on a scale from 0-500. Anything above 300 categorized as **Hazardous**, and according to the EPA, such conditions are "extremely rare" in the US and "generally occur only during events such as forest fires".
+
+Values above 500 are categorized as **Beyond Index**, but have occasionally been reported in extremely polluted areas of China, so they are technically possible. It therefore seems prudent to allow for extreme readings, but at the same time set an upper limit beyond which values are considered to be an error.
+
 ## Setup
 
 1. If you don't already have one, get an API key for AirNow.
