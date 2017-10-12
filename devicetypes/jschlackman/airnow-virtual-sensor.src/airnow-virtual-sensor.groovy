@@ -2,8 +2,8 @@
  *  AirNow Virtual Sensor
  *
  *  Author: jschlackman (james@schlackman.org)
- *  Version: 1.0
- *  Date: 2017-09-14
+ *  Version: 1.1
+ *  Date: 2017-10-10
  *
  *  Latest version & ReadMe: https://github.com/jschlackman/AirNow
  *
@@ -163,7 +163,7 @@ def poll() {
 				// Parse the observation data array
 				resp.data.each {observation ->
 					
-                    // Only parse this data if the AQI figure is in a sensible range (accounts for ocassional API bugs)
+                    // Only parse this data if the AQI figure is in a sensible range (accounts for occasional API bugs)
                     if ((observation.AQI >= 0) && (observation.AQI <= 2000)) {
                     
                         if (observation.ParameterName == "O3") {
@@ -203,7 +203,7 @@ def poll() {
                     send(name: "dateObserved", value: resp.data[0].DateObserved)
                     send(name: "hourObserved", value: resp.data[0].HourObserved)
 
-					log.debug("Sucessfully retrieved air quality data from AirNow.")
+					log.debug("Successfully retrieved air quality data from AirNow.")
 				} else {
 					log.debug("Failed to retrieve valid air quality data from AirNow.")
                 }
@@ -217,7 +217,7 @@ def poll() {
         }
         catch (e) {
 			log.error("Could not retrieve AirNow data: $e")
-        	send(name: "reportingLocation", value: "Could not retreive data: check API key in device settings")
+        	send(name: "reportingLocation", value: "Could not retrieve data: check API key in device settings")
 		}
 
 	}
