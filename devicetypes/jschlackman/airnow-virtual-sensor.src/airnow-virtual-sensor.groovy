@@ -11,7 +11,7 @@
 metadata {
 	definition (name: "AirNow Virtual Sensor", namespace: "jschlackman", author: "james@schlackman.org") {
 		capability "Sensor"
-        capability "Polling"
+		capability "Polling"
 
 		attribute "combined", "number" // Combined AQI value (worst of either Ozone or PM2.5)
 		attribute "combinedCategory", "number" // Combined AQI category number
@@ -23,10 +23,10 @@ metadata {
 		attribute "Pm25Category", "number" // PM2.5 AQI category number
 		attribute "Pm25CategoryName", "string" // PM2.5 AQI category name
 		attribute "reportingLocation", "string" // City or area name of observed data, with 2-letter state code. Also used to display errors in the mobile app UI.
-        attribute "dateObserved", "string" // Date of observation (yyyy-mm-dd)
-        attribute "hourObserved", "number" // Hour of observation (00-23)
-        attribute "latitude", "number" // Latitude of observation area in decimal degrees.
-        attribute "longitude", "number" // Longitude of observation area in decimal degrees.
+		attribute "dateObserved", "string" // Date of observation (yyyy-mm-dd)
+		attribute "hourObserved", "number" // Hour of observation (00-23)
+		attribute "latitude", "number" // Latitude of observation area in decimal degrees.
+		attribute "longitude", "number" // Longitude of observation area in decimal degrees.
 
 		command "refresh"
 	}
@@ -34,58 +34,59 @@ metadata {
 	preferences {
 		input name: "zipCode", type: "text", title: "Zip Code (optional)", required: false
 		input name: "airNowKey", type: "text", title: "AirNow API Key", required: true, description: "Register at airnowapi.org"
-        input name: "distance", type: "number", title: "Max. Observation Distance (miles)", required: false, description: "Default: 25 miles."
+		input name: "distance", type: "number", title: "Max. Observation Distance (miles)", required: false, description: "Default: 25 miles."
+		input name: "about", type: "paragraph", element: "paragraph", title: "AirNow Virtual Sensor 1.1", description: "By James Schlackman <james@schlackman.org>"
 	}
 
 	tiles(scale: 2) {
 		
-        // Combined AQI number tile, used only for Things view
+		// Combined AQI number tile, used only for Things view
 		standardTile("mainTile", "device.combined", width: 2, height: 2, decoration: "flat", canChangeIcon: true) {
 			state "default", label:'${currentValue}', icon: "st.Outdoor.outdoor25", // Defaults to tree icon from ST Outdoor category
-                backgroundColors:[
-                    [value: 25, color: "#44b621"],
-                    [value: 60, color: "#f1d801"],
-                    [value: 110, color: "#d04e00"],
-                    [value: 165, color: "#bc2323"],
-                    [value: 220, color: "#693591"],
-                    [value: 320, color: "#7e0023"],
-                ]
-        	}
+				backgroundColors:[
+					[value: 25, color: "#44b621"],
+					[value: 60, color: "#f1d801"],
+					[value: 110, color: "#d04e00"],
+					[value: 165, color: "#bc2323"],
+					[value: 220, color: "#693591"],
+					[value: 320, color: "#7e0023"],
+				]
+			}
 
 		// Ozone AQI category
 		standardTile("O3CategoryName", "device.O3CategoryName", width: 4, height: 2, decoration: "flat") {
 			state "default", label:'Ozone Level: ${currentValue}'
 		}
-        
+		
 		// Ozone AQI value
-        valueTile("O3", "device.O3", width: 2, height: 2) {
+		valueTile("O3", "device.O3", width: 2, height: 2) {
 			state "default", label:'${currentValue}',
-                backgroundColors:[
-                    [value: 25, color: "#44b621"],
-                    [value: 60, color: "#f1d801"],
-                    [value: 110, color: "#d04e00"],
-                    [value: 165, color: "#bc2323"],
-                    [value: 220, color: "#693591"],
-                    [value: 320, color: "#7e0023"],
-                ]
+				backgroundColors:[
+					[value: 25, color: "#44b621"],
+					[value: 60, color: "#f1d801"],
+					[value: 110, color: "#d04e00"],
+					[value: 165, color: "#bc2323"],
+					[value: 220, color: "#693591"],
+					[value: 320, color: "#7e0023"],
+				]
 		}
 
 		// PM2.5 AQI category
 		standardTile("Pm25CategoryName", "device.Pm25CategoryName", width: 4, height: 2, decoration: "flat") {
 			state "default", label:'PM₂.₅ Level: ${currentValue}'
 		}
-        
+		
 		// PM2.5 AQI value
-        valueTile("Pm25", "device.Pm25", width: 2, height: 2) {
+		valueTile("Pm25", "device.Pm25", width: 2, height: 2) {
 			state "default", label:'${currentValue}',
-                backgroundColors:[
-                    [value: 25, color: "#44b621"],
-                    [value: 60, color: "#f1d801"],
-                    [value: 110, color: "#d04e00"],
-                    [value: 165, color: "#bc2323"],
-                    [value: 220, color: "#693591"],
-                    [value: 320, color: "#7e0023"],
-                ]
+				backgroundColors:[
+					[value: 25, color: "#44b621"],
+					[value: 60, color: "#f1d801"],
+					[value: 110, color: "#d04e00"],
+					[value: 165, color: "#bc2323"],
+					[value: 220, color: "#693591"],
+					[value: 320, color: "#7e0023"],
+				]
 		}
 
 		// Observation location
@@ -110,7 +111,7 @@ def parse(String description) {
 }
 
 def installed() {
-    runEvery1Hour(poll)
+	runEvery1Hour(poll)
 	poll()
 }
 
@@ -129,7 +130,7 @@ def poll() {
 	if(airNowKey) {
 		
 		def airZip = null
-        def airDistance = 0
+		def airDistance = 0
 
 		// Use hub zipcode if user has not defined their own
 		if(zipCode) {
@@ -137,13 +138,13 @@ def poll() {
 		} else {
 			airZip = location.zipCode
 		}
-        
-        // Set the user's requested observation distance, or use a default of 25 miles
-        if(distance) {
-        	airDistance = distance
-        } else {
-        	airDistance = 25
-        }
+		
+		// Set the user's requested observation distance, or use a default of 25 miles
+		if(distance) {
+			airDistance = distance
+		} else {
+			airDistance = 25
+		}
 
 		// Set up the AirNow API query
 		def params = [
@@ -157,74 +158,74 @@ def poll() {
 		// Send query to the AirNow API
 			httpGet(params) {resp ->
 				def newCombined = -1
-                def newCombinedCategory = -1
-                def newCombinedCategoryName = ''
+				def newCombinedCategory = -1
+				def newCombinedCategoryName = ''
 
 				// Parse the observation data array
 				resp.data.each {observation ->
 					
-                    // Only parse this data if the AQI figure is in a sensible range (accounts for occasional API bugs)
-                    if ((observation.AQI >= 0) && (observation.AQI <= 2000)) {
-                    
-                        if (observation.ParameterName == "O3") {
-                            send(name: "O3", value: observation.AQI)
-                            send(name: "O3Category", value: observation.Category.Number)
-                            send(name: "O3CategoryName", value: observation.Category.Name)
-                        }
-                        else if (observation.ParameterName == "PM2.5") {
-                            send(name: "Pm25", value: observation.AQI)
-                            send(name: "Pm25Category", value: observation.Category.Number)
-                            send(name: "Pm25CategoryName", value: observation.Category.Name)
-                        }	
+					// Only parse this data if the AQI figure is in a sensible range (accounts for occasional API bugs)
+					if ((observation.AQI >= 0) && (observation.AQI <= 2000)) {
+					
+						if (observation.ParameterName == "O3") {
+							send(name: "O3", value: observation.AQI)
+							send(name: "O3Category", value: observation.Category.Number)
+							send(name: "O3CategoryName", value: observation.Category.Name)
+						}
+						else if (observation.ParameterName == "PM2.5") {
+							send(name: "Pm25", value: observation.AQI)
+							send(name: "Pm25Category", value: observation.Category.Number)
+							send(name: "Pm25CategoryName", value: observation.Category.Name)
+						}	
 
-                        // Check if the observation currently being parsed has the highest AQI and should therefore be the combined AQI
-                        if ((observation.AQI > newCombined) || (observation.Category.Number > newCombinedCategory)) {
-                            newCombined = observation.AQI
-                            newCombinedCategory = observation.Category.Number
-                            newCombinedCategoryName = observation.Category.Name
-                        }
+						// Check if the observation currently being parsed has the highest AQI and should therefore be the combined AQI
+						if ((observation.AQI > newCombined) || (observation.Category.Number > newCombinedCategory)) {
+							newCombined = observation.AQI
+							newCombinedCategory = observation.Category.Number
+							newCombinedCategoryName = observation.Category.Name
+						}
 					} else {
-                    	log.error("AirNow returned an AQI of ${observation.AQI} for ${observation.ParameterName}. Ignoring as this is probably invalid.")
-                    }
+						log.error("AirNow returned an AQI of ${observation.AQI} for ${observation.ParameterName}. Ignoring as this is probably invalid.")
+					}
 				}
 				
-                // If we got valid data for at least one observation, send the combined AQI and reporting data
-                if (newCombined > -1) {
-                
-                    // Send the combined AQI
-                    send(name: "combined", value: newCombined)
-                    send(name: "combinedCategory", value: newCombinedCategory)
-                    send(name: "combinedCategoryName", value: newCombinedCategoryName)
+				// If we got valid data for at least one observation, send the combined AQI and reporting data
+				if (newCombined > -1) {
+				
+					// Send the combined AQI
+					send(name: "combined", value: newCombined)
+					send(name: "combinedCategory", value: newCombinedCategory)
+					send(name: "combinedCategoryName", value: newCombinedCategoryName)
 
-                    // Send the first reporting area (it will be the same for both observations)
-                    send(name: "reportingLocation", value: "${resp.data[0].ReportingArea} ${resp.data[0].StateCode}")
-                    send(name: "latitude", value: resp.data[0].Latitude)
-                    send(name: "longitude", value: resp.data[0].Longitude)
-                    send(name: "dateObserved", value: resp.data[0].DateObserved)
-                    send(name: "hourObserved", value: resp.data[0].HourObserved)
+					// Send the first reporting area (it will be the same for both observations)
+					send(name: "reportingLocation", value: "${resp.data[0].ReportingArea} ${resp.data[0].StateCode}")
+					send(name: "latitude", value: resp.data[0].Latitude)
+					send(name: "longitude", value: resp.data[0].Longitude)
+					send(name: "dateObserved", value: resp.data[0].DateObserved)
+					send(name: "hourObserved", value: resp.data[0].HourObserved)
 
 					log.debug("Successfully retrieved air quality data from AirNow.")
 				} else {
 					log.debug("Failed to retrieve valid air quality data from AirNow.")
-                }
+				}
 			}
 
 
 		}
 		catch (SocketTimeoutException e) {
 			log.error("Connection to AirNow API timed out.")
-        	send(name: "reportingLocation", value: "Connection timed out while retrieving data from AirNow")
-        }
-        catch (e) {
+			send(name: "reportingLocation", value: "Connection timed out while retrieving data from AirNow")
+		}
+		catch (e) {
 			log.error("Could not retrieve AirNow data: $e")
-        	send(name: "reportingLocation", value: "Could not retrieve data: check API key in device settings")
+			send(name: "reportingLocation", value: "Could not retrieve data: check API key in device settings")
 		}
 
 	}
 	
 	else {
 		log.warn "No AirNow API key specified."
-        send(name: "reportingLocation", value: "No AirNow API key specified in device settings")
+		send(name: "reportingLocation", value: "No AirNow API key specified in device settings")
 	}
 }
 
