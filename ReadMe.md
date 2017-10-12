@@ -23,8 +23,8 @@ A SmartThings virtual device type handler (DTH) for retrieving air quality data 
     5. **Location**: Pick your hub location from the dropdown.
     6. **Hub**: Pick your hub from the dropdown.
     7. Click **Create**.
-    4. Go to the new device you created SmartThings IDE > My SmartApps > Ready For Nature and click on **App Settings** in the top right.
-    5. Click **Settings** and paste in your API key in the **Value** box next to **airNowKey**
+    8. Go to the new device you created SmartThings IDE > My SmartApps > Ready For Nature and click on **App Settings** in the top right.
+    9. Click **Settings** and paste in your API key in the **Value** box next to **airNowKey**
 
 4. On the Device page for the new virtual device you just created, click the **edit** link next to **Preferences** and paste your API key from step 1 into the **AirNow API Key** box.
 
