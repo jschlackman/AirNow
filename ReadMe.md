@@ -63,7 +63,9 @@ You can view the current values for any of these on the **Recently** tab for the
 
 ## Data Limitations
 
-Data returned is subject to the [limitations of the AirNow API](https://docs.airnowapi.org/faq#reportingAreaForecasts). In addition, this virtual device will only return air quality index (AQI) values below 2000. The AirNow API sometimes reports completely erroneous and very high values, so anything above 2000 will be ignored. Here's why the cut-off is at that level:
+Data returned is subject to the [limitations of the AirNow API](https://docs.airnowapi.org/faq#reportingAreaForecasts). Some zipcodes will simply not have any data available, in which case you will never receive alerts based on air quality and you may see the message "Failed to retrieve valid air quality data from AirNow" in the live logging section of the IDE. You can test whether data is avaiable for your zipcode by testing it on the [AirNow API Query Tool](https://docs.airnowapi.org/ForecastsByZip/query). If the output for the **application/json** format is simply [], then no data is available. Your best bet is to try a neighboring zipcode. Look up your zipcode on http://maps.huge.info/zip.htm and try some of the other zipcodes near you.
+
+In addition, this virtual device will only return air quality index (AQI) values below 2000. The AirNow API sometimes reports completely erroneous and very high values, so anything above 2000 will be ignored. Here's why the cut-off is at that level:
 
 The [EPA's AQI categories](https://airnow.gov/index.cfm?action=aqi_brochure.index) work on a scale from 0-500. Anything above 300 categorized as **Hazardous**, and according to the EPA, such conditions are "extremely rare" in the US and "generally occur only during events such as forest fires".
 
