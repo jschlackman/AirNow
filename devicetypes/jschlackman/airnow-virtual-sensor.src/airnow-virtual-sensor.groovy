@@ -2,8 +2,8 @@
  *  AirNow Virtual Sensor
  *
  *  Author: jschlackman (james@schlackman.org)
- *  Version: 1.1
- *  Date: 2017-10-10
+ *  Version: 1.2
+ *  Date: 2020-10-10
  *
  *  Latest version & ReadMe: https://github.com/jschlackman/AirNow
  *
@@ -13,7 +13,7 @@ metadata {
 		capability "Sensor"
 		capability "Polling"
 
-		attribute "combined", "number" // Combined AQI value (worst of either Ozone or PM2.5)
+		attribute "combined", "number" // Combined AQI value (worst of either Ozone, PM2.5, or PM10)
 		attribute "combinedCategory", "number" // Combined AQI category number
 		attribute "combinedCategoryName", "string" // Combined AQI category name
 		attribute "O3", "number" // Ozone AQI value
@@ -22,6 +22,9 @@ metadata {
 		attribute "Pm25", "number" // PM2.5 AQI value
 		attribute "Pm25Category", "number" // PM2.5 AQI category number
 		attribute "Pm25CategoryName", "string" // PM2.5 AQI category name
+		attribute "Pm10", "number" // PM10 AQI value
+		attribute "Pm10Category", "number" // PM10 AQI category number
+		attribute "Pm10CategoryName", "string" // PM10 AQI category name
 		attribute "reportingLocation", "string" // City or area name of observed data, with 2-letter state code. Also used to display errors in the mobile app UI.
 		attribute "dateObserved", "string" // Date of observation (yyyy-mm-dd)
 		attribute "hourObserved", "number" // Hour of observation (00-23)
@@ -35,7 +38,7 @@ metadata {
 		input name: "zipCode", type: "text", title: "Zip Code (optional)", required: false
 		input name: "airNowKey", type: "text", title: "AirNow API Key", required: true, description: "Register at airnowapi.org"
 		input name: "distance", type: "number", title: "Max. Observation Distance (miles)", required: false, description: "Default: 25 miles."
-		input name: "about", type: "paragraph", element: "paragraph", title: "AirNow Virtual Sensor 1.1", description: "By James Schlackman <james@schlackman.org>"
+		input name: "about", type: "paragraph", element: "paragraph", title: "AirNow Virtual Sensor 1.2", description: "By James Schlackman <james@schlackman.org>"
 	}
 
 	tiles(scale: 2) {
@@ -78,6 +81,24 @@ metadata {
 		
 		// PM2.5 AQI value
 		valueTile("Pm25", "device.Pm25", width: 2, height: 2) {
+			state "default", label:'${currentValue}',
+				backgroundColors:[
+					[value: 25, color: "#44b621"],
+					[value: 60, color: "#f1d801"],
+					[value: 110, color: "#d04e00"],
+					[value: 165, color: "#bc2323"],
+					[value: 220, color: "#693591"],
+					[value: 320, color: "#7e0023"],
+				]
+		}
+
+		// PM10 AQI category
+		standardTile("Pm10CategoryName", "device.Pm10CategoryName", width: 4, height: 2, decoration: "flat") {
+			state "default", label:'PM₁₀ Level: ${currentValue}'
+		}
+		
+		// PM10 AQI value
+		valueTile("Pm10", "device.Pm10", width: 2, height: 2) {
 			state "default", label:'${currentValue}',
 				backgroundColors:[
 					[value: 25, color: "#44b621"],
@@ -176,6 +197,11 @@ def poll() {
 							send(name: "Pm25", value: observation.AQI)
 							send(name: "Pm25Category", value: observation.Category.Number)
 							send(name: "Pm25CategoryName", value: observation.Category.Name)
+						}	
+						else if (observation.ParameterName == "PM10") {
+							send(name: "Pm10", value: observation.AQI)
+							send(name: "Pm10Category", value: observation.Category.Number)
+							send(name: "Pm10CategoryName", value: observation.Category.Name)
 						}	
 
 						// Check if the observation currently being parsed has the highest AQI and should therefore be the combined AQI
