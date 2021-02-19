@@ -1,6 +1,8 @@
-# AirNow Virtual Sensor
+# AirNow Virtual Sensor (NO LONGER SUPPORTED)
 
 A SmartThings virtual device type handler (DTH) for retrieving air quality data from the U.S. EPA [AirNow API](https://docs.airnowapi.org/).
+
+**This DTH was designed for the now-retired SmartThings Classic app and does not function correctly in the new SmartThings app.** It would require a complete rewrite to get it to work again and I have no plans to reimplement it at this time.
 
 ## Setup
 
